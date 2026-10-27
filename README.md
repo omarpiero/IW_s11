@@ -1,93 +1,126 @@
-# 🌐 Repositorio de Prácticas y Proyectos: Ingeniería Web (Semana 11)
+# 🏢 API REST: Gestión de Empresas y Empleados (Node.js + Express + MongoDB)
 
-Bienvenido al repositorio de la sesión de **Ingeniería Web (Semana 11)**. Este espacio contiene proyectos modulares en Node.js y Express, prácticas de persistencia en datos, renderizado con plantillas y la transición hacia bases de datos NoSQL con **MongoDB**.
+API REST modular y segura desarrollada con **Node.js**, **Express** y **Mongoose**, implementando modelado de relaciones **1 a N (1:N)**, persistencia en **MongoDB Community Server**, seguridad HTTP con **Helmet**, logging con **Morgan**, y soporte para URLs amigables (**Slugs** y **DNI**).
 
 ---
 
-## 📂 Estructura del Repositorio
+## 📁 Estructura del Proyecto
 
 ```text
-iw_s11/
-├── 📁 01_demo_EJS/                 # Renderizado del lado del servidor (SSR) con EJS y Express
-├── 📁 02_cursos/                   # API inicial de gestión de cursos con persistencia en db.json
-├── 📁 02_cursos_usuarios_v1_0_0/   # API modularizada (v1.0.0) de cursos y usuarios
-├── 📁 04_cursos_usuarios_v1_1_0/   # Versión avanzada (v1.1.0) con estructura en capas
-├── 📄 GUIA_GIT.md                  # Guía de ramas, stash, commits y flujos de trabajo en Git
-├── 📄 GUIA_MONGODB.md              # Guía completa de MongoDB (consola mongosh, operadores y Mongoose)
-├── 📄 MongoDB introducción anotaciones.pdf  # Diapositivas/anotaciones de comandos MongoDB básicos
-├── 📄 Ejemplo mongoDB Anotaciones.pdf       # Diapositivas/anotaciones de API REST y relaciones 1:N
-├── 📄 README.md                    # Descripción general del repositorio y guía de inicio
-└── 📄 .gitignore                   # Exclusión de archivos y binarios pesados
+mi-api/
+├── .env                  # Variables de entorno (puerto y URI de conexión a MongoDB)
+├── package.json          # Metadatos del proyecto, dependencias y scripts de ejecución
+├── index.js              # Servidor principal Express, middlewares y conexión a MongoDB
+├── seed.js               # Script para inicializar y poblar la base de datos con datos de prueba
+├── models/
+│   ├── Empresa.js        # Modelo Mongoose de Empresa (con generación automática de Slug)
+│   └── Empleado.js       # Modelo Mongoose de Empleado (con DNI, Slug y referencia a Empresa)
+└── routes/
+    ├── empresaRoutes.js  # Endpoints para empresas (búsqueda por _id o por Slug)
+    └── empleadoRoutes.js # Endpoints para empleados (búsqueda por _id, DNI o Slug con .populate)
 ```
 
 ---
 
-## 🛠️ Tecnologías y Herramientas
+## 🛠️ Tecnologías y Dependencias
 
-- **Entorno de Ejecución:** [Node.js](https://nodejs.org/) (JavaScript runtime)
-- **Framework Web:** [Express.js](https://expressjs.com/)
-- **Motores de Plantillas:** EJS (Embedded JavaScript templates)
-- **Bases de Datos:**
-  - Persistencia inicial: JSON plano (`db.json`)
-  - NoSQL Profesional: **MongoDB Community Server** (v9.0.x) + **MongoDB Shell (`mongosh`)**
-- **ODM (Object Data Modeling):** [Mongoose](https://mongoosejs.com/)
-- **Control de Versiones:** Git & GitHub
-
----
-
-## 🚀 Proyectos Incluidos
-
-### 1. `01_demo_EJS`
-Demostración básica de renderizado dinámico con **EJS**:
-- Inyección de variables y arrays en vistas HTML.
-- Configuración del motor de vistas con `app.set('view engine', 'ejs')`.
-
-### 2. `02_cursos` y Evolución a `04_cursos_usuarios_v1_1_0`
-Evolución paso a paso de una API REST:
-- **v1.0.0:** Separación de responsabilidades, endpoints de `/api/cursos` y `/api/usuarios`.
-- **v1.1.0:** Organización modular avanzada con middlewares, rutas segregadas y frontend integrado en `/public`.
+* **Entorno:** [Node.js](https://nodejs.org/) (JavaScript Runtime)
+* **Base de Datos:** [MongoDB](https://www.mongodb.com/) Community Server (v9.0.x)
+* **Visualizador Gráfico:** MongoDB Compass
+* **Framework Web:** [Express.js](https://expressjs.com/)
+* **ODM (Modelado de Datos):** [Mongoose](https://mongoosejs.com/)
+* **Middlewares y Utilidades:**
+  * **`cors`:** Habilita el intercambio de recursos entre diferentes orígenes y puertos.
+  * **`helmet`:** Blindaje de seguridad HTTP (oculta cabeceras sensibles y previene ataques comunes).
+  * **`morgan`:** Logger de peticiones HTTP en consola en tiempo real (formato dev con colores).
+  * **`dotenv`:** Gestión segura de variables de entorno fuera del código fuente.
+  * **`nodemon`:** Recarga en caliente del servidor durante el desarrollo al detectar cambios en disco.
 
 ---
 
-## 🍃 MongoDB y Persistencia Avanzada
+## 🧠 Arquitectura y Modelo de Datos (1:N)
 
-Para consultar la guía paso a paso y los ejemplos de consola y código, revisa el archivo:
-👉 **[GUIA_MONGODB.md](GUIA_MONGODB.md)**
+Una **Empresa** tiene muchos **Empleados**, y un **Empleado** pertenece a una única **Empresa**.
 
-### Resumen de características cubiertas:
-1. **Comandos de Consola (`mongosh`):** Creación de bases de datos (`use`), colecciones e inserción masiva (`insertMany`).
-2. **Operadores de Comparación y Filtro:** `$gt`, `$gte`, `$lt`, `$lte`, `$eq`, `$ne`, `$in`, `$nin`, `$exists`, `$regex`.
-3. **Operaciones CRUD:** Actualizaciones con `$set`, `$currentDate`, reemplazo y borrado selectivo.
-4. **Relaciones 1 a N:** Vinculación de documentos Empresa ↔ Empleados mediante `ObjectId` y `.populate()`.
-5. **API REST con Mongoose:** Arquitectura modelo-ruta-controlador, variables de entorno (`.env`) y script de precarga (`seed.js`).
-
----
-
-## 🏁 Cómo Iniciar Cualquier Proyecto
-
-1. Clona el repositorio o abre la carpeta en tu terminal:
-   ```bash
-   cd c:\Users\zoomy\Downloads\iw_s11
-   ```
-
-2. Entra al proyecto que deseas ejecutar:
-   ```bash
-   cd 04_cursos_usuarios_v1_1_0
-   ```
-
-3. Instala las dependencias necesarias:
-   ```bash
-   npm install
-   ```
-
-4. Ejecuta el servidor en modo desarrollo:
-   ```bash
-   npm run dev
-   # o bien: node src/server.js
-   ```
+```mermaid
+erDiagram
+    EMPRESAS ||--o{ EMPLEADOS : "1 empresa tiene N empleados"
+    EMPRESAS {
+        ObjectId _id PK "Autogenerado"
+        String nombre "Nombre comercial"
+        String slug UK "Normalizado sin acentos (ej: tech-solutions)"
+        String direccion "Ubicación"
+        String telefono "Contacto"
+    }
+    EMPLEADOS {
+        ObjectId _id PK "Autogenerado"
+        String nombre "Nombre de pila"
+        String apellido "Apellido"
+        String dni UK "Documento único (ej: 71000001)"
+        String slug UK "Identificador amigable (ej: carlos-perez-0001)"
+        String cargo "Rol o puesto laboral"
+        ObjectId empresa_id FK "Referencia a Empresa (_id)"
+    }
+```
 
 ---
 
-## 📌 Guías de Referencia Rápida
-- **Git y Ramas:** Consulta [GUIA_GIT.md](GUIA_GIT.md).
-- **MongoDB y Mongoose:** Consulta [GUIA_MONGODB.md](GUIA_MONGODB.md).
+## 🚀 Puesta en Marcha
+
+### 1. Requisitos Previos
+* Tener instalado **Node.js** (v18 o superior).
+* Tener el servicio de **MongoDB Server** activo en el puerto local estándar (`mongodb://localhost:27017`).
+
+### 2. Instalación de Dependencias
+Navega a la carpeta del proyecto e instala los paquetes:
+```bash
+cd mi-api
+npm install
+```
+
+### 3. Configuración de Variables de Entorno (`.env`)
+Verifica o crea el archivo `.env` en la raíz de `mi-api/`:
+```env
+PORT=3000
+MONGO_URI=mongodb://localhost:27017/mi_empresa_db
+```
+
+### 4. Inicializar y Poblar la Base de Datos (`Seed`)
+Ejecuta el script para limpiar y cargar automáticamente las empresas y empleados de prueba:
+```bash
+npm run seed
+```
+
+### 5. Iniciar el Servidor en Modo Desarrollo
+```bash
+npm run dev
+```
+El servidor quedará escuchando en `http://localhost:3000` con Nodemon y Morgan activos.
+
+---
+
+## 🌐 Endpoints y Rutas de la API
+
+### 🏢 Empresas (`/api/empresas`)
+
+| Método | Endpoint | Descripción | Ejemplo de URL |
+| :---: | :--- | :--- | :--- |
+| **`GET`** | `/api/empresas` | Lista todas las empresas registradas. | `http://localhost:3000/api/empresas` |
+| **`GET`** | `/api/empresas/:identificador` | Obtiene una empresa por su **Slug amigable** o por su **`_id`**. | `http://localhost:3000/api/empresas/tech-solutions` |
+| **`GET`** | `/api/empresas/:identificador/empleados` | Obtiene los empleados de esa empresa buscando por **Slug** o **`_id`**. | `http://localhost:3000/api/empresas/tech-solutions/empleados` |
+
+### 👥 Empleados (`/api/empleados`)
+
+| Método | Endpoint | Descripción | Ejemplo de URL |
+| :---: | :--- | :--- | :--- |
+| **`GET`** | `/api/empleados` | Lista todos los empleados con los datos de su empresa poblados (`.populate`). | `http://localhost:3000/api/empleados` |
+| **`GET`** | `/api/empleados/:identificador` | Busca un empleado por su **DNI**, su **Slug** o su **`_id`**. | `http://localhost:3000/api/empleados/71000001` |
+| **`GET`** | `/api/empleados/:identificador` | Búsqueda por Slug tipo perfil. | `http://localhost:3000/api/empleados/carlos-perez-0001` |
+
+---
+
+## 📜 Scripts de NPM
+
+* **`npm run dev`**: Arranca el servidor con **Nodemon** (reinicio automático en cada guardado de archivo) y registro con **Morgan**.
+* **`npm start`**: Arranca el servidor en modo estándar de producción con Node.js.
+* **`npm run seed`**: Limpia y vuelve a cargar los datos de prueba en la base de datos `mi_empresa_db`.
