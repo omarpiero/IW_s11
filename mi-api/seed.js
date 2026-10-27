@@ -7,11 +7,11 @@ const Empleado = require('./models/Empleado');
 const seedData = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('🔌 Conectado a MongoDB...');
+    console.log('[INFO] Conectado a MongoDB...');
 
     await Empresa.deleteMany({});
     await Empleado.deleteMany({});
-    console.log('🧹 Colecciones anteriores limpiadas.');
+    console.log('[INFO] Colecciones anteriores limpiadas.');
 
     // 1. Crear Empresas (el hook pre('save') generará su slug automáticamente)
     const empresa1 = new Empresa({
@@ -29,7 +29,7 @@ const seedData = async () => {
     await empresa1.save();
     await empresa2.save();
 
-    console.log('🏢 Empresas creadas:');
+    console.log('[INFO] Empresas creadas:');
     console.log(`   - ${empresa1.nombre} -> Slug: ${empresa1.slug} (ID: ${empresa1._id})`);
     console.log(`   - ${empresa2.nombre} -> Slug: ${empresa2.slug} (ID: ${empresa2._id})`);
 
@@ -44,25 +44,24 @@ const seedData = async () => {
 
       // Empresa 2
       { nombre: 'Pedro', apellido: 'Ramírez', dni: '72000006', cargo: 'Gerente', empresa_id: empresa2._id },
-      { nombre: 'Laura', apellido: 'Fernández', dni: '72000007', cargo: 'RRHH', empresa_id: empresa2._id },
-      { nombre: 'Diego', apellido: 'Torres', dni: '72000008', cargo: 'Contador', empresa_id: empresa2._id },
-      { nombre: 'Valentina', apellido: 'Castro', dni: '72000009', cargo: 'Marketing', empresa_id: empresa2._id },
-      { nombre: 'Sebastián', apellido: 'Ortega', dni: '72000010', cargo: 'Frontend Developer', empresa_id: empresa2._id }
+      { nombre: 'Laura', apellido: 'Fernández', cargo: 'RRHH', empresa_id: empresa2._id },
+      { nombre: 'Diego', apellido: 'Torres', cargo: 'Contador', empresa_id: empresa2._id },
+      { nombre: 'Valentina', apellido: 'Castro', cargo: 'Marketing', empresa_id: empresa2._id },
+      { nombre: 'Sebastián', apellido: 'Ortega', cargo: 'Frontend Developer', empresa_id: empresa2._id }
     ];
 
-    // Guardamos con save() para activar el hook pre('save') del slug
     for (const empData of empleados) {
       const emp = new Empleado(empData);
       await emp.save();
     }
 
-    console.log(`👥 Se insertaron ${empleados.length} empleados con DNI y Slug.`);
-    console.log('🎉 ¡Proceso de semillado finalizado con éxito!');
+    console.log(`[INFO] Se insertaron ${empleados.length} empleados con DNI y Slug.`);
+    console.log('[OK] Proceso de semillado finalizado con éxito.');
   } catch (error) {
-    console.error('❌ Error al sembrar datos:', error);
+    console.error('[X] Error al sembrar datos:', error);
   } finally {
     await mongoose.disconnect();
-    console.log('🔌 Desconectado de MongoDB.');
+    console.log('[INFO] Desconectado de MongoDB.');
   }
 };
 

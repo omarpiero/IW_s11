@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Control | Sistema de Venta de Computadoras</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Barra Superior -->
+    <header class="navbar">
+      <div class="brand">
+        <span class="brand-badge">CRUD UI</span>
+        <h1>Sistema de Venta de Computadoras</h1>
+      </div>
+      <div class="student-info">
+        <span class="info-tag">Omar Piero Terbullino Jaime</span>
+        <span class="info-tag code">Cod: 72682019</span>
+        <span class="info-tag course">Ingeniería Web</span>
+        <span id="server-status" class="status-indicator online">Conectado</span>
+      </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+      <!-- Navegación de Pestañas -->
+      <nav class="tabs-nav">
+        <button class="tab-btn active" data-tab="productos">Productos (Computadoras)</button>
+        <button class="tab-btn" data-tab="tiendas">Tiendas</button>
+        <button class="tab-btn" data-tab="clientes">Clientes</button>
+        <button class="tab-btn" data-tab="ventas">Ventas</button>
+        <button class="tab-btn" data-tab="detalles">Detalles de Venta</button>
+      </nav>
+
+      <!-- Panel de Control y Formulario de Creación -->
+      <div class="action-bar">
+        <div class="search-box">
+          <input type="text" id="filter-input" placeholder="Filtrar datos en tabla...">
+          <button id="refresh-btn" class="btn btn-secondary">Actualizar Datos</button>
+        </div>
+        <button id="toggle-form-btn" class="btn btn-primary">+ Nuevo Registro</button>
+      </div>
+
+      <!-- Modal / Formulario Colapsable -->
+      <section id="form-container" class="card form-card hidden">
+        <div class="card-header">
+          <h2 id="form-title">Registrar Nuevo Ítem</h2>
+          <button id="close-form-btn" class="btn-close">&times;</button>
+        </div>
+        <form id="dynamic-form">
+          <div id="form-fields" class="form-grid">
+            <!-- Inyectado dinámicamente según la pestaña activa -->
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-success">Guardar en Base de Datos</button>
+            <button type="button" id="cancel-form-btn" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Vista de Tabla Dinámica -->
+      <section class="card table-card">
+        <div class="table-responsive">
+          <table id="data-table">
+            <thead id="table-head">
+              <!-- Columnas dinámicas -->
+            </thead>
+            <tbody id="table-body">
+              <tr><td colspan="6" class="text-center">Cargando datos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Visor de JSON en Vivo -->
+      <section class="card json-card">
+        <div class="card-header">
+          <h3>Inspector de Respuesta JSON (API REST)</h3>
+          <span id="json-endpoint-label" class="endpoint-pill">GET /api/...</span>
+        </div>
+        <pre><code id="json-viewer">// Los datos recibidos de la API se renderizarán aquí en formato JSON ordenado...</code></pre>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Base de Datos: <strong>prueba_productos_db</strong> | Servidor: Node.js + Express + Mongoose</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

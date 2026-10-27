@@ -1,126 +1,76 @@
-# 🏢 API REST: Gestión de Empresas y Empleados (Node.js + Express + MongoDB)
+# Repositorio de Prácticas y Proyectos: Ingeniería Web
 
-API REST modular y segura desarrollada con **Node.js**, **Express** y **Mongoose**, implementando modelado de relaciones **1 a N (1:N)**, persistencia en **MongoDB Community Server**, seguridad HTTP con **Helmet**, logging con **Morgan**, y soporte para URLs amigables (**Slugs** y **DNI**).
+Repositorio central para el desarrollo y documentación de prácticas de arquitectura de software web, persistencia NoSQL con **MongoDB**, modelado relacional **SQL** y diseño de APIs REST con **Node.js** y **Express**.
 
 ---
 
-## 📁 Estructura del Proyecto
+## Datos de Identificación
+
+* **Estudiante:** Omar Piero Terbullino Jaime
+* **Código:** 72682019
+* **Asignatura:** Ingeniería Web
+
+---
+
+## Estructura General del Repositorio
+
+El espacio de trabajo se organiza en dos proyectos principales:
 
 ```text
-mi-api/
-├── .env                  # Variables de entorno (puerto y URI de conexión a MongoDB)
-├── package.json          # Metadatos del proyecto, dependencias y scripts de ejecución
-├── index.js              # Servidor principal Express, middlewares y conexión a MongoDB
-├── seed.js               # Script para inicializar y poblar la base de datos con datos de prueba
-├── models/
-│   ├── Empresa.js        # Modelo Mongoose de Empresa (con generación automática de Slug)
-│   └── Empleado.js       # Modelo Mongoose de Empleado (con DNI, Slug y referencia a Empresa)
-└── routes/
-    ├── empresaRoutes.js  # Endpoints para empresas (búsqueda por _id o por Slug)
-    └── empleadoRoutes.js # Endpoints para empleados (búsqueda por _id, DNI o Slug con .populate)
+iw_s11/
+├── mi-api/               # Práctica 1: API REST con MongoDB y Mongoose (Relación 1:N Empresa-Empleado)
+├── prueba-productos/     # Práctica 2: Sistema de Venta de Computadoras (SQL + MongoDB + CRUD + UI)
+├── GUIA_GIT.md           # Guía técnica de ramas y flujos de trabajo con Git
+├── GUIA_MONGODB.md       # Guía de comandos mongosh, operadores y modelado ODM
+├── README.md             # Documentación general del repositorio
+└── .gitignore            # Exclusión de entornos, dependencias y archivos binarios
 ```
 
 ---
 
-## 🛠️ Tecnologías y Dependencias
+## Proyectos Disponibles
 
-* **Entorno:** [Node.js](https://nodejs.org/) (JavaScript Runtime)
-* **Base de Datos:** [MongoDB](https://www.mongodb.com/) Community Server (v9.0.x)
-* **Visualizador Gráfico:** MongoDB Compass
-* **Framework Web:** [Express.js](https://expressjs.com/)
-* **ODM (Modelado de Datos):** [Mongoose](https://mongoosejs.com/)
-* **Middlewares y Utilidades:**
-  * **`cors`:** Habilita el intercambio de recursos entre diferentes orígenes y puertos.
-  * **`helmet`:** Blindaje de seguridad HTTP (oculta cabeceras sensibles y previene ataques comunes).
-  * **`morgan`:** Logger de peticiones HTTP en consola en tiempo real (formato dev con colores).
-  * **`dotenv`:** Gestión segura de variables de entorno fuera del código fuente.
-  * **`nodemon`:** Recarga en caliente del servidor durante el desarrollo al detectar cambios en disco.
+### 1. `mi-api` - Gestión de Empresas y Empleados
+* **Descripción:** Implementación de la guía de introducción a MongoDB y Mongoose. Desarrolla la relación 1 a N entre empresas y empleados con búsqueda dual (por `_id` y por `slug`), consultas relacionales vía `.populate()`, seguridad con Helmet y logging con Morgan.
+* **Base de datos:** `mi_empresa_db`
+* **Documentación específica:** Consulte [mi-api/README.md](mi-api/README.md).
 
----
-
-## 🧠 Arquitectura y Modelo de Datos (1:N)
-
-Una **Empresa** tiene muchos **Empleados**, y un **Empleado** pertenece a una única **Empresa**.
-
-```mermaid
-erDiagram
-    EMPRESAS ||--o{ EMPLEADOS : "1 empresa tiene N empleados"
-    EMPRESAS {
-        ObjectId _id PK "Autogenerado"
-        String nombre "Nombre comercial"
-        String slug UK "Normalizado sin acentos (ej: tech-solutions)"
-        String direccion "Ubicación"
-        String telefono "Contacto"
-    }
-    EMPLEADOS {
-        ObjectId _id PK "Autogenerado"
-        String nombre "Nombre de pila"
-        String apellido "Apellido"
-        String dni UK "Documento único (ej: 71000001)"
-        String slug UK "Identificador amigable (ej: carlos-perez-0001)"
-        String cargo "Rol o puesto laboral"
-        ObjectId empresa_id FK "Referencia a Empresa (_id)"
-    }
-```
+### 2. `prueba-productos` - Sistema de Venta de Computadoras
+* **Descripción:** Solución integral para la venta de equipos informáticos. Integra:
+  - **Diseño Relacional (/docs):** Diagrama Entidad-Relación (DER), Modelo Relacional y Diccionario de Datos exhaustivo para Tiendas, Proveedores, Clientes, Productos, Ventas y Detalles de Venta.
+  - **Scripts SQL (/database):** Scripts DDL (creación de tablas y restricciones) y DML (datos de prueba para MySQL/MariaDB).
+  - **API REST NoSQL (MongoDB):** CRUD completo (GET, POST, PUT, DELETE) para las 6 entidades bajo la base de datos `prueba_productos_db`.
+  - **Manejo de Slugs:** Slugs automáticos para Tiendas (por nombre) y Productos (por nombre + últimos 3 dígitos de código de barras).
+  - **Interfaz Visual (UI):** Panel web interactivo para gestionar y visualizar el CRUD en tiempo real con ordenamiento de datos JSON.
+* **Base de datos:** `prueba_productos_db`
+* **Documentación específica:** Consulte [prueba-productos/README.md](prueba-productos/README.md).
 
 ---
 
-## 🚀 Puesta en Marcha
+## Requisitos y Puesta en Marcha
 
-### 1. Requisitos Previos
-* Tener instalado **Node.js** (v18 o superior).
-* Tener el servicio de **MongoDB Server** activo en el puerto local estándar (`mongodb://localhost:27017`).
+### Prerrequisitos
+1. **Node.js:** Versión 18.0.0 o superior instalada.
+2. **MongoDB Community Server:** En ejecución en el puerto local por defecto (`27017`).
+3. **MySQL / MariaDB (Opcional para scripts SQL):** Servidor local activo si se desea desplegar el script relacional.
 
-### 2. Instalación de Dependencias
-Navega a la carpeta del proyecto e instala los paquetes:
+### Instrucciones de Inicio Rápido
+
+Para ejecutar cualquiera de los dos proyectos:
+
 ```bash
+# 1. Ingresar al directorio del proyecto deseado
 cd mi-api
+# o bien: cd prueba-productos
+
+# 2. Instalar las dependencias
 npm install
-```
 
-### 3. Configuración de Variables de Entorno (`.env`)
-Verifica o crea el archivo `.env` en la raíz de `mi-api/`:
-```env
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/mi_empresa_db
-```
-
-### 4. Inicializar y Poblar la Base de Datos (`Seed`)
-Ejecuta el script para limpiar y cargar automáticamente las empresas y empleados de prueba:
-```bash
+# 3. Poblar la base de datos con los datos de prueba
 npm run seed
-```
 
-### 5. Iniciar el Servidor en Modo Desarrollo
-```bash
+# 4. Iniciar el servidor
 npm run dev
+# Para prueba-productos con panel web interactivo:
+# npm run dev:ui
 ```
-El servidor quedará escuchando en `http://localhost:3000` con Nodemon y Morgan activos.
-
----
-
-## 🌐 Endpoints y Rutas de la API
-
-### 🏢 Empresas (`/api/empresas`)
-
-| Método | Endpoint | Descripción | Ejemplo de URL |
-| :---: | :--- | :--- | :--- |
-| **`GET`** | `/api/empresas` | Lista todas las empresas registradas. | `http://localhost:3000/api/empresas` |
-| **`GET`** | `/api/empresas/:identificador` | Obtiene una empresa por su **Slug amigable** o por su **`_id`**. | `http://localhost:3000/api/empresas/tech-solutions` |
-| **`GET`** | `/api/empresas/:identificador/empleados` | Obtiene los empleados de esa empresa buscando por **Slug** o **`_id`**. | `http://localhost:3000/api/empresas/tech-solutions/empleados` |
-
-### 👥 Empleados (`/api/empleados`)
-
-| Método | Endpoint | Descripción | Ejemplo de URL |
-| :---: | :--- | :--- | :--- |
-| **`GET`** | `/api/empleados` | Lista todos los empleados con los datos de su empresa poblados (`.populate`). | `http://localhost:3000/api/empleados` |
-| **`GET`** | `/api/empleados/:identificador` | Busca un empleado por su **DNI**, su **Slug** o su **`_id`**. | `http://localhost:3000/api/empleados/71000001` |
-| **`GET`** | `/api/empleados/:identificador` | Búsqueda por Slug tipo perfil. | `http://localhost:3000/api/empleados/carlos-perez-0001` |
-
----
-
-## 📜 Scripts de NPM
-
-* **`npm run dev`**: Arranca el servidor con **Nodemon** (reinicio automático en cada guardado de archivo) y registro con **Morgan**.
-* **`npm start`**: Arranca el servidor en modo estándar de producción con Node.js.
-* **`npm run seed`**: Limpia y vuelve a cargar los datos de prueba en la base de datos `mi_empresa_db`.
